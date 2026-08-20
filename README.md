@@ -23,6 +23,15 @@ Google Sheets  ──►  Apps Script Web App  ──►  Next.js API route  ─
 
 Khoá `APPS_SCRIPT_URL` chỉ nằm ở server (Vercel env var), không lộ ra trình duyệt.
 
+## Link đã deploy
+
+- **Trang web:** https://portal-mkt-assistant-truc-dangs-projects-428d51c3.vercel.app
+- **Vercel project:** `portal-mkt-assistant` (team *truc dang's projects*)
+- **Repo:** https://github.com/newallket02-hash/kiemtranghiduong
+
+Nếu mở link mà Vercel bắt đăng nhập: vào project → **Settings → Deployment Protection** →
+tắt **Vercel Authentication**, để nhân viên vào được bằng link.
+
 ## Cài đặt (1 lần duy nhất, ~5 phút)
 
 ### Bước 1 — Deploy backend Apps Script
@@ -37,11 +46,18 @@ Khoá `APPS_SCRIPT_URL` chỉ nằm ở server (Vercel env var), không lộ ra 
 > Mỗi lần sửa `Code.gs` phải **Deploy → Manage deployments → Edit → New version** thì URL cũ mới
 > nhận code mới.
 
-### Bước 2 — Nối URL vào Vercel
+### Bước 2 — Nối URL vào web
 
-1. Vào Vercel project → **Settings** → **Environment Variables**.
-2. Thêm biến `APPS_SCRIPT_URL` = URL vừa copy (chọn cả Production + Preview).
+Có hai cách, chọn một:
+
+**Cách A — biến môi trường (khuyến nghị):**
+1. Vercel project → **Settings** → **Environment Variables**.
+2. Thêm `APPS_SCRIPT_URL` = URL vừa copy (chọn cả Production + Preview).
 3. **Deployments** → deployment mới nhất → **Redeploy**.
+
+**Cách B — dán vào code:** gửi URL đó cho Claude, hoặc tự sửa
+[`lib/config.ts`](lib/config.ts) (`APPS_SCRIPT_URL_FALLBACK = 'https://script.google.com/.../exec'`)
+rồi deploy lại.
 
 Xong. Nhãn ở góc phải header đổi từ *“Dữ liệu mẫu — chưa nối Sheets”* sang *“Đang nối Google Sheets”*.
 

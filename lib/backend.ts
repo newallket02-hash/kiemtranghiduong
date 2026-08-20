@@ -1,11 +1,12 @@
 import type { Bootstrap, ReportPayload, TaskGroup, Week } from './types';
 import { DEMO_TASK_GROUPS, DEMO_WEEKS } from './demo-data';
+import { APPS_SCRIPT_URL_FALLBACK } from './config';
 
 export const SHEET_URL =
   'https://docs.google.com/spreadsheets/d/1KRaohYpialvnq_HSQFMbNWl_uFAOKnB5xkBXr_UIlOM/edit';
 
 export function scriptUrl(): string {
-  return (process.env.APPS_SCRIPT_URL || '').trim();
+  return (process.env.APPS_SCRIPT_URL || APPS_SCRIPT_URL_FALLBACK || '').trim();
 }
 
 /** Apps Script trả 302 sang googleusercontent — fetch mặc định đã follow. */

@@ -14,11 +14,16 @@ async function callScript(init: RequestInit & { query?: string }): Promise<any> 
   if (!base) throw new Error('APPS_SCRIPT_URL chưa được cấu hình');
 
   const url = init.query ? `${base}${base.includes('?') ? '&' : '?'}${init.query}` : base;
-  const res = await fetch(url, {
-    ...init,
-    redirect: 'follow',
-    cache: 'no-store',
-  });
+  const { query: _query, ...rest } = init;
+
+  // GET được cache 60 giây cho nhẹ (sửa sheet chậm nhất 1 phút sau là lên web).
+  // POST phải luôn đi thẳng, không bao giờ cache.
+  const cacheOpts: RequestInit =
+    (init.method || 'GET').toUpperCase() === 'GET'
+      ? ({ next: { revalidate: 60 } } as RequestInit)
+      : { cache: 'no-store' };
+
+  const res = await fetch(url, { ...rest, ...cacheOpts, redirect: 'follow' });
 
   const text = await res.text();
   if (!res.ok) {

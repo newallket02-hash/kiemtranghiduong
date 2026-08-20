@@ -73,3 +73,4 @@ giao diện — nhưng nút gửi sẽ báo lỗi vì không có nơi để ghi.
   máy mở lại vẫn còn; nháp bị xoá sau khi gửi thành công.
 - Trang tự chọn đúng **tuần hiện tại** và **ngày hôm nay** dựa trên nhãn ngày trong sheet.
 - Nhân viên chỉ cần điền những task có làm trong ca — không bắt buộc điền hết.
+- Dữ liệu đọc từ sheet được cache 60 giây, nên sau khi sửa sheet chậm nhất 1 phút là web cập nhật.

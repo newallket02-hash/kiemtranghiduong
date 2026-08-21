@@ -28,12 +28,18 @@ Khoá `APPS_SCRIPT_URL` chỉ nằm ở server (Vercel env var), không lộ ra 
 
 ## Link đã deploy
 
-- **Trang web:** https://portal-mkt-assistant-truc-dangs-projects-428d51c3.vercel.app
-- **Vercel project:** `portal-mkt-assistant` (team *truc dang's projects*)
+- **Trang web:** https://golden-lotus-mkt-portal-truc-dangs-projects-428d51c3.vercel.app
+- **Vercel project:** `golden-lotus-mkt-portal` (team *truc dang's projects*)
 - **Repo:** https://github.com/newallket02-hash/kiemtranghiduong
+- **Code.gs để dán vào Apps Script:** https://drive.google.com/file/d/1eQoCZrM4jDguPDhps_kbrJYGdngFStir/view
 
 Nếu mở link mà Vercel bắt đăng nhập: vào project → **Settings → Deployment Protection** →
 tắt **Vercel Authentication**, để nhân viên vào được bằng link.
+
+> **Lưu ý về quyền Vercel:** tài khoản đang kết nối chỉ tạo được **một deployment cho mỗi project
+> mới** — deploy lần hai vào cùng project trả về 403 (giới hạn role). Vì vậy mỗi lần cập nhật giao
+> diện lại phải tạo project mới và link đổi theo. Nâng quyền tài khoản trên Vercel rồi deploy từ
+> dashboard (hoặc nối Git integration) sẽ giữ được link cố định.
 
 ## Cài đặt (1 lần duy nhất, ~5 phút)
 

@@ -42,11 +42,12 @@ function doGet(e) {
   var action = (e && e.parameter && e.parameter.action) || 'bootstrap';
   try {
     if (action === 'bootstrap') {
+      var weeks = readSchedule();
       return jsonOut({
         ok: true,
         updatedAt: new Date().toISOString(),
-        weeks: readSchedule(),
-        taskGroups: readTasks()
+        weeks: weeks,
+        taskGroups: readTasks(staffNamesOf(weeks))
       });
     }
     if (action === 'reports') {
@@ -176,8 +177,16 @@ function findWeekLabel(grid, headerRowIndex) {
 /**
  * Doc sheet "Task": Nhom Logic | Ten Task | Danh sach cau hoi.
  * Cot cau hoi la text nhieu dong, moi dong bat dau bang "*".
+ *
+ * Ngoai cac nhom chung (co ten o cot "Nhom Logic"), sheet con co the co block
+ * viec rieng cua tung nguoi: o cot "Ten Task" ghi dung ten mot nhan vien trong
+ * sheet "Lich lam", cac dong ben duoi la dau viec cua rieng nguoi do.
+ * Nhung nhom nay duoc danh dau owner = ten nhan vien va chi hien voi nguoi do.
  */
-function readTasks() {
+function readTasks(staffNames) {
+  var owners = {};
+  (staffNames || []).forEach(function (n) { owners[norm(n)] = true; });
+
   var sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_TASK);
   if (!sheet) return [];
 
@@ -198,23 +207,43 @@ function readTasks() {
   for (var rr = headerRow + 1; rr < grid.length; rr++) {
     var line = grid[rr];
     var groupName = norm(line[col]);
-    var taskName = norm(line[col + 1]);
+    var rawTask = String(line[col + 1] || '');
+    var taskName = norm(rawTask);
     var rawQuestions = line[col + 2] || '';
 
     if (groupName) {
-      current = { group: groupName, tasks: [] };
+      current = { group: groupName, owner: '', tasks: [] };
       groups.push(current);
     }
     if (!taskName) continue;
+
+    // Dong chi ghi ten mot nhan vien -> bat dau block viec rieng cua nguoi do
+    if (owners[taskName] && !norm(rawQuestions)) {
+      current = { group: 'Việc riêng của ' + taskName, owner: taskName, tasks: [] };
+      groups.push(current);
+      continue;
+    }
+
     if (!current) {
-      current = { group: 'Khác', tasks: [] };
+      current = { group: 'Khác', owner: '', tasks: [] };
       groups.push(current);
     }
 
+    // Khi khong co cot cau hoi, dong dau cua o la ten task, cac dong sau la y chi tiet
+    var name = taskName;
+    var questions = parseQuestions(rawQuestions);
+    if (!questions.length) {
+      var lines = splitLines(rawTask);
+      if (lines.length > 1) {
+        name = lines[0].replace(/:$/, '');
+        questions = parseQuestions(lines.slice(1).join('\n'));
+      }
+    }
+
     current.tasks.push({
-      id: slug(taskName) + '-' + groups.length + '-' + current.tasks.length,
-      name: taskName,
-      questions: parseQuestions(rawQuestions)
+      id: slug(name) + '-' + groups.length + '-' + current.tasks.length,
+      name: name,
+      questions: questions
     });
   }
 
@@ -236,7 +265,7 @@ function parseQuestions(raw) {
     var m = line.match(/^([^:]{1,40}):\s*(.+)$/);
     return {
       id: 'q' + (idx + 1),
-      label: m ? norm(m[1]) : 'Nội dung',
+      label: m ? norm(m[1]) : '',
       prompt: m ? norm(m[2]) : line
     };
   });
@@ -315,6 +344,26 @@ function readReports(employee, date) {
 }
 
 /* ============================ HELPERS ============================ */
+
+function staffNamesOf(weeks) {
+  var seen = {};
+  var out = [];
+  (weeks || []).forEach(function (w) {
+    (w.staff || []).forEach(function (s) {
+      var n = norm(s.name);
+      if (n && !seen[n]) { seen[n] = true; out.push(n); }
+    });
+  });
+  return out;
+}
+
+function splitLines(raw) {
+  return String(raw || '')
+    .replace(/\r/g, '')
+    .split('\n')
+    .map(function (s) { return norm(s); })
+    .filter(function (s) { return s.length > 0; });
+}
 
 function norm(v) {
   return String(v === null || v === undefined ? '' : v).replace(/\s+/g, ' ').trim();

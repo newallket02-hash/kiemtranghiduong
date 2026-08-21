@@ -17,7 +17,10 @@ Google Sheets  ──►  Apps Script Web App  ──►  Next.js API route  ─
   (dòng có ô `Nhân viên`) nên **tuần mới bạn thêm vào hàng tuần sẽ tự hiện trên web**, không cần
   sửa code.
 - **Sheet “Task”** — nguồn của toàn bộ câu hỏi trong form. Thêm/sửa task hoặc câu hỏi trong sheet
-  là form trên web đổi theo.
+  là form trên web đổi theo. Muốn giao **việc riêng cho một người**: để trống cột *Nhóm Logic*,
+  ghi đúng tên nhân viên (như trong sheet “Lịch làm”) vào cột *Tên Task*, rồi liệt kê đầu việc ở
+  các dòng bên dưới — nhóm đó chỉ hiện với đúng người ấy.
+- Task không có câu hỏi kèm theo vẫn được một ô **“Ghi chú / kết quả trong ca”** để điền tự do.
 - **Sheet “Báo cáo”** — script tự tạo lần đầu, mỗi câu trả lời là một dòng:
   `Thời gian nộp | Ngày làm việc | Nhân viên | Vị trí | Ca làm | Tuần | Nhóm công việc | Tên Task | Câu hỏi | Nội dung nhân viên điền | Trạng thái | Ghi chú chung`
 

@@ -1,7 +1,7 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import type { Bootstrap, ReportEntry, Week } from '@/lib/types';
+import type { Bootstrap, Question, ReportEntry, TaskGroup, Week } from '@/lib/types';
 
 type TaskAnswer = { status: string; answers: Record<string, string> };
 type AnswerMap = Record<string, TaskAnswer>;
@@ -65,6 +65,13 @@ function pickTodayIndex(week: Week | undefined): number {
   });
 }
 
+/** Task trong sheet không kèm câu hỏi thì vẫn cho một ô ghi chú tự do. */
+const FREE_NOTE = { id: 'note', label: '', prompt: 'Ghi chú / kết quả trong ca' };
+
+function questionsOf(task: { questions: Question[] }): Question[] {
+  return task.questions.length ? task.questions : [FREE_NOTE];
+}
+
 function shiftKind(shift: string): 'work' | 'off' | 'empty' {
   const v = shift.trim();
   if (!v) return 'empty';
@@ -112,10 +119,16 @@ export default function Portal({ sheetUrl }: { sheetUrl: string }) {
   }, []);
 
   const weeks = data?.weeks ?? [];
-  const groups = data?.taskGroups ?? [];
+  const allGroups = data?.taskGroups ?? [];
   const week = weeks[weekIndex];
   const staff = week?.staff ?? [];
   const me = staff.find((s) => s.name === employee);
+
+  // Nhóm việc riêng chỉ hiện với đúng nhân viên đó, nhóm chung hiện với mọi người.
+  const groups = useMemo(
+    () => allGroups.filter((g: TaskGroup) => !g.owner || g.owner === employee),
+    [allGroups, employee]
+  );
   const dayLabel = dayIndex >= 0 ? week?.days[dayIndex] ?? '' : '';
   const myShift = me && dayIndex >= 0 ? me.shifts[dayIndex] ?? '' : '';
 
@@ -193,7 +206,7 @@ export default function Portal({ sheetUrl }: { sheetUrl: string }) {
       for (const t of g.tasks) {
         const val = answers[t.id];
         if (!val) continue;
-        const filledQuestions = t.questions.filter((q) => (val.answers[q.id] || '').trim());
+        const filledQuestions = questionsOf(t).filter((q) => (val.answers[q.id] || '').trim());
         if (!filledQuestions.length && !val.status.trim()) continue;
 
         if (!filledQuestions.length) {
@@ -204,7 +217,7 @@ export default function Portal({ sheetUrl }: { sheetUrl: string }) {
           entries.push({
             group: g.group,
             task: t.name,
-            question: `${q.label}: ${q.prompt}`,
+            question: q.label ? `${q.label}: ${q.prompt}` : q.prompt,
             answer: (val.answers[q.id] || '').trim(),
             status: val.status,
           });
@@ -443,10 +456,16 @@ export default function Portal({ sheetUrl }: { sheetUrl: string }) {
                                 </div>
 
                                 <div className="qa">
-                                  {t.questions.map((q) => (
+                                  {questionsOf(t).map((q) => (
                                     <div className="field" key={q.id}>
                                       <label htmlFor={`${t.id}-${q.id}`}>
-                                        <b>{q.label}</b> — <i>{q.prompt}</i>
+                                        {q.label ? (
+                                          <>
+                                            <b>{q.label}</b> — <i>{q.prompt}</i>
+                                          </>
+                                        ) : (
+                                          <i>{q.prompt}</i>
+                                        )}
                                       </label>
                                       <textarea
                                         id={`${t.id}-${q.id}`}

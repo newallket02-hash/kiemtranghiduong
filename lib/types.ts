@@ -30,6 +30,8 @@ export type Task = {
 
 export type TaskGroup = {
   group: string;
+  /** Có giá trị khi đây là block việc riêng của một nhân viên; rỗng = nhóm chung. */
+  owner?: string;
   tasks: Task[];
 };
 

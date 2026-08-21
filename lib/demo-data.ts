@@ -64,7 +64,7 @@ export const DEMO_TASK_GROUPS: TaskGroup[] = [
       {
         id: 'kiem-tra-so-luong-khach-1-1',
         name: 'Kiểm tra số lượng khách Gym/Cafe/HSSV',
-        questions: q([['Nội dung', 'Cập nhật số lượng vào file/phần mềm nào, chốt số liệu mấy lần/ngày?']]),
+        questions: q([['', 'Cập nhật số lượng vào file/phần mềm nào, chốt số liệu mấy lần/ngày?']]),
       },
       {
         id: 'ho-tro-van-hanh-huong-dan-khach-1-2',
@@ -266,6 +266,29 @@ export const DEMO_TASK_GROUPS: TaskGroup[] = [
           ['Kết quả', 'Đạt bao nhiêu điểm, những câu làm sai đã được hướng dẫn đính chính lại chưa?'],
         ]),
       },
+    ],
+  },
+  {
+    group: 'Việc riêng của Yến Ngọc',
+    owner: 'Yến Ngọc',
+    tasks: [
+      {
+        id: 'truc-fanpage-5-0',
+        name: 'Trực fanpage',
+        questions: q([
+          ['', 'Trả lời tất cả tin nhắn của khách ở 2 page của Q2, Zalo OA.'],
+          ['', 'Tư vấn các dịch vụ và nhận lịch khách đặt qua tin nhắn và hotline'],
+          ['', 'Phản hồi những khiếu nại của khách'],
+          ['', 'Kiểm tra clip tik tok của khách'],
+        ]),
+      },
+      { id: 'nghe-hotline-5-1', name: 'Nghe hotline: tư vấn dịch vụ và hỗ trợ đặt lịch cho khách', questions: [] },
+      { id: 'kiem-tra-klook-5-2', name: 'Kiểm tra Klook', questions: [] },
+      { id: 'nhap-so-lieu-hssv-5-3', name: 'Nhập số liệu HSSV, ưu đãi 139k, tổng khách', questions: [] },
+      { id: 'ho-tro-check-out-5-4', name: 'Hỗ trợ check out cho lễ tân', questions: [] },
+      { id: 'ho-tro-fill-quan-ao-5-5', name: 'Hỗ trợ fill quần áo, khăn, cắt phiếu trứng', questions: [] },
+      { id: 'huong-dan-khu-tu-giay-5-6', name: 'Hướng dẫn khách ở khu vực tủ giày', questions: [] },
+      { id: 'thuc-hien-khao-sat-5-7', name: 'Thực hiện chương trình khảo sát khách hàng', questions: [] },
     ],
   },
 ];

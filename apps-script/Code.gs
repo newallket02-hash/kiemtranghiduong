@@ -1,21 +1,29 @@
 /**
  * MKT Assistant Portal - Backend Google Apps Script
  * ------------------------------------------------
- * Gan voi file Google Sheets "Lich lam parttime".
+ * Doc/ghi file Google Sheets "Lich lam parttime" theo SHEET_ID ben duoi.
  *
- * Cach cai dat:
- *   1. Mo Google Sheets > Extensions (Tien ich mo rong) > Apps Script
+ * Cach cai dat (dung script DOC LAP, khong gan trong file Sheets):
+ *   1. Vao https://script.google.com > New project
  *   2. Xoa het code mac dinh, dan toan bo file nay vao
- *   3. Deploy > New deployment > Type: Web app
+ *   3. Chon ham kiemTra roi bam Run (>) mot lan de cap quyen va kiem tra
+ *   4. Deploy > New deployment > Type: Web app
  *        - Execute as: Me
  *        - Who has access: Anyone
- *   4. Copy URL /exec va dan vao bien moi truong APPS_SCRIPT_URL tren Vercel
+ *   5. Copy URL /exec va dan vao bien moi truong APPS_SCRIPT_URL tren Vercel
+ *
+ * Tai khoan deploy phai co quyen EDIT tren file Sheets ben duoi thi moi ghi
+ * duoc sheet "Bao cao". Chi co quyen Viewer thi doc lich van chay nhung gui
+ * bao cao se bao loi khong ghi duoc.
  *
  * API:
- *   GET  ?action=bootstrap          -> { weeks, employees, taskGroups }
+ *   GET  ?action=bootstrap          -> { weeks, taskGroups }
  *   GET  ?action=reports&week=...   -> { reports }
  *   POST { action: 'submit', ... }  -> { ok: true, saved: n }
  */
+
+// ID cua file Google Sheets "Lich lam parttime" (lay tu URL cua file).
+var SHEET_ID = '1KRaohYpialvnq_HSQFMbNWl_uFAOKnB5xkBXr_UIlOM';
 
 var SHEET_SCHEDULE = 'Lịch làm';
 var SHEET_TASK = 'Task';
@@ -35,6 +43,21 @@ var REPORT_HEADERS = [
   'Trạng thái',
   'Ghi chú chung'
 ];
+
+/**
+ * Chay ham nay trong Apps Script editor de cap quyen va kiem tra ket noi.
+ * Xem ket qua o Execution log.
+ */
+function kiemTra() {
+  var weeks = readSchedule();
+  var groups = readTasks(staffNamesOf(weeks));
+  Logger.log('Doc duoc %s tuan: %s', weeks.length, weeks.map(function (w) { return w.label; }).join(' | '));
+  Logger.log('Nhan vien: %s', staffNamesOf(weeks).join(', '));
+  Logger.log('Nhom cong viec: %s', groups.map(function (g) {
+    return g.group + ' (' + g.tasks.length + ' task' + (g.owner ? ', rieng ' + g.owner : '') + ')';
+  }).join(' | '));
+  return { weeks: weeks.length, groups: groups.length };
+}
 
 /* ============================ ROUTER ============================ */
 
@@ -100,7 +123,7 @@ function jsonOut(obj) {
  * thuoc vao vi tri cot/dong cu the -> tuan sau them block moi van chay dung.
  */
 function readSchedule() {
-  var sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_SCHEDULE);
+  var sheet = book().getSheetByName(SHEET_SCHEDULE);
   if (!sheet) return [];
 
   var grid = sheet.getDataRange().getDisplayValues();
@@ -187,7 +210,7 @@ function readTasks(staffNames) {
   var owners = {};
   (staffNames || []).forEach(function (n) { owners[norm(n)] = true; });
 
-  var sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_TASK);
+  var sheet = book().getSheetByName(SHEET_TASK);
   if (!sheet) return [];
 
   var grid = sheet.getDataRange().getDisplayValues();
@@ -274,7 +297,7 @@ function parseQuestions(raw) {
 /* ========================== SHEET: BÁO CÁO ======================== */
 
 function getReportSheet() {
-  var ss = SpreadsheetApp.getActive();
+  var ss = book();
   var sheet = ss.getSheetByName(SHEET_REPORT);
   if (!sheet) {
     sheet = ss.insertSheet(SHEET_REPORT);
@@ -319,13 +342,21 @@ function saveReport(body) {
     ];
   });
 
-  sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, REPORT_HEADERS.length).setValues(rows);
-  SpreadsheetApp.flush();
+  try {
+    sheet.getRange(sheet.getLastRow() + 1, 1, rows.length, REPORT_HEADERS.length).setValues(rows);
+    SpreadsheetApp.flush();
+  } catch (err) {
+    throw new Error(
+      'Không ghi được vào sheet "' + SHEET_REPORT + '". Tài khoản deploy Apps Script ' +
+      'cần quyền Edit trên file Google Sheets. Chi tiết: ' +
+      String(err && err.message ? err.message : err)
+    );
+  }
   return rows.length;
 }
 
 function readReports(employee, date) {
-  var sheet = SpreadsheetApp.getActive().getSheetByName(SHEET_REPORT);
+  var sheet = book().getSheetByName(SHEET_REPORT);
   if (!sheet || sheet.getLastRow() < 2) return [];
 
   var grid = sheet.getDataRange().getDisplayValues();
@@ -344,6 +375,14 @@ function readReports(employee, date) {
 }
 
 /* ============================ HELPERS ============================ */
+
+/**
+ * Mo file Sheets theo ID nen chay duoc ca khi script doc lap lan khi gan trong
+ * file. Dung getActive() se hong neu script khong gan trong file nao.
+ */
+function book() {
+  return SpreadsheetApp.openById(SHEET_ID);
+}
 
 function staffNamesOf(weeks) {
   var seen = {};

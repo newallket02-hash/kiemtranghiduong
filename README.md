@@ -31,7 +31,7 @@ Khoá `APPS_SCRIPT_URL` chỉ nằm ở server (Vercel env var), không lộ ra 
 - **Trang web:** https://golden-lotus-mkt-portal-truc-dangs-projects-428d51c3.vercel.app
 - **Vercel project:** `golden-lotus-mkt-portal` (team *truc dang's projects*)
 - **Repo:** https://github.com/newallket02-hash/kiemtranghiduong
-- **Code.gs để dán vào Apps Script:** https://drive.google.com/file/d/1eQoCZrM4jDguPDhps_kbrJYGdngFStir/view
+- **Code.gs để dán vào Apps Script:** https://drive.google.com/file/d/1HE7AiDf-NR1LLvNRVIvssDO9kU-UpSEA/view
 
 Nếu mở link mà Vercel bắt đăng nhập: vào project → **Settings → Deployment Protection** →
 tắt **Vercel Authentication**, để nhân viên vào được bằng link.
@@ -45,12 +45,21 @@ tắt **Vercel Authentication**, để nhân viên vào được bằng link.
 
 ### Bước 1 — Deploy backend Apps Script
 
-1. Mở Google Sheets → **Tiện ích mở rộng (Extensions)** → **Apps Script**.
+Dùng **dự án độc lập**, không tạo script gắn trong file Sheets. Script gắn trong file sẽ lỗi
+`Attempted to execute doGet, but could not save` nếu tài khoản chạy không có quyền ghi lên chính
+file đó (file này thuộc `mkt@goldenlotus.world`).
+
+1. Vào https://script.google.com → **New project**.
 2. Xoá hết code mặc định, dán toàn bộ nội dung file [`apps-script/Code.gs`](apps-script/Code.gs).
-3. Bấm **Deploy** → **New deployment** → bánh răng chọn **Web app**:
+3. Chọn hàm **`kiemTra`** trong thanh trên rồi bấm **Run ▶** — cấp quyền khi Google hỏi. Xem
+   *Execution log*: phải in ra số tuần, tên nhân viên và các nhóm công việc đọc được.
+4. Bấm **Deploy** → **New deployment** → bánh răng chọn **Web app**:
    - *Execute as*: **Me**
    - *Who has access*: **Anyone**
-4. Bấm **Deploy**, cấp quyền, rồi copy **Web app URL** (dạng `https://script.google.com/macros/s/.../exec`).
+5. Bấm **Deploy**, rồi copy **Web app URL** (dạng `https://script.google.com/macros/s/.../exec`).
+
+Tài khoản deploy phải có quyền **Edit** trên file Sheets thì mới ghi được sheet “Báo cáo”. Chỉ có
+quyền Viewer thì xem lịch vẫn chạy, nhưng bấm gửi sẽ báo thiếu quyền.
 
 > Mỗi lần sửa `Code.gs` phải **Deploy → Manage deployments → Edit → New version** thì URL cũ mới
 > nhận code mới.

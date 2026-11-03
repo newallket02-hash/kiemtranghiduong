@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hướng dẫn lễ tân dùng máy POS</title>
+<style>
+:root{--gold:#c48b19;--soft:#f2e3bf;--dark:#2b1d0b;--bg:#fbf8f1;--card:#f5f0e4;--ink:#1a1208;--muted:#7a6a4f;--red:#b3261e;--redbg:#fbe9e7}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#120c05;--card:#241a0c;--ink:#f5ecd9;--soft:#3a2a10;--muted:#bfae8a;--redbg:#3a1714;--red:#ff9a90}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 Arial,Helvetica,sans-serif}
+header{background:#1a1208;color:#f5ecd9;padding:28px 16px 20px;border-bottom:4px solid var(--gold)}
+header>div,main{max-width:1040px;margin:0 auto}header small{color:#e6c47a;font-weight:700;letter-spacing:.05em}
+h1{margin:6px 0 4px;font-size:clamp(24px,5vw,36px)}header p{margin:0;color:#e6c47a}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid #0002;padding:10px 16px}
+nav div{max-width:1040px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap}
+nav a{padding:8px 14px;border-radius:20px;background:var(--card);color:var(--ink);text-decoration:none;font-weight:700;font-size:14px;border:1px solid #0001}
+nav a:hover,nav a:focus-visible{background:var(--gold);color:#fff;outline:none}
+main{padding:8px 16px 64px}h2{margin:36px 0 12px;padding:12px 16px;background:var(--dark);color:#e6c47a;font-size:19px;border-radius:4px;scroll-margin-top:60px}
+.box{background:var(--soft);border-left:4px solid var(--gold);padding:12px 16px;font-weight:700;font-size:20px;margin:0 0 14px}
+.rules{margin:0 0 18px;padding-left:20px}.rules li{margin:6px 0}h4{color:var(--gold);margin:16px 0 6px}
+.flow{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:6px}.flow li{display:flex;gap:12px;align-items:center;background:var(--card);padding:8px 12px;font-weight:700}
+.flow b{background:var(--gold);color:#fff;min-width:28px;height:28px;display:grid;place-items:center;border-radius:4px}.flow em{margin-left:auto;font-size:12px;color:var(--muted);font-style:normal;font-weight:400}
+.step{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:20px;margin:0 0 28px;align-items:start}
+.step figure{margin:0}.step img{width:100%;height:auto;display:block;border-radius:4px;box-shadow:0 3px 14px #0003;background:#fff}
+h3{margin:8px 0;font-size:20px}.step p{margin:6px 0}
+.who{display:inline-block;padding:3px 12px;font-size:12px;font-weight:700;color:#fff;border-radius:2px}.who-k{background:var(--dark)}.who-l{background:var(--gold)}.who-h{background:#5b7a5a}
+.note{background:var(--card);border-left:3px solid var(--gold);padding:8px 12px;font-size:14px}.note.warn{background:var(--redbg);border-color:var(--red);color:var(--red)}
+.check{list-style:none;padding:0;margin:0 0 12px;display:grid;gap:6px}.check li{background:var(--card);padding:10px 12px 10px 46px;position:relative}
+.check li:before{content:"✓";position:absolute;left:0;top:0;bottom:0;width:34px;background:var(--gold);color:#fff;display:grid;place-items:center;font-weight:700}
+.rule{background:var(--soft);border-left:4px solid var(--gold);padding:10px 14px;font-weight:700}
+@media(max-width:700px){.step{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<header><div><small>GOLDEN LOTUS HEALING WORLD · LỄ TÂN</small><h1>Hướng dẫn lễ tân sử dụng máy POS</h1><p>Phần 1 · Tiêu điểm và tích điểm cho hội viên &nbsp;|&nbsp; Phần 2 · Dùng và hủy voucher</p></div></header>
+<nav><div><a href="#diem">Phần 1 · Dùng điểm</a><a href="#voucher">Phần 2 · Dùng voucher</a></div></nav>
+<main>
+<h2 id="diem">PHẦN 1 · TIÊU ĐIỂM VÀ TÍCH ĐIỂM</h2>
+<p class="box">1.000 point = 1.000 đ</p>
+<h4>Quy tắc cần nhớ</h4>
+<ul class="rules"><li>Mỗi lần tiêu tối thiểu 1.000 point và phải là bội số của 1.000 (1.000, 2.000, 3.000…). Không tiêu số lẻ như 1.500.</li><li>Không giới hạn tối đa, nhưng không vượt số point khách đang có.</li><li>Áp dụng cho mọi loại dịch vụ.</li><li>Point có hạn sử dụng. Khách xem hạn ngay trên app khi xem point của mình.</li><li>Một bill được dùng point cùng lúc với voucher.</li><li>Point tích theo tỷ lệ của hạng thành viên (ví dụ Silver 3%).</li></ul>
+<h4>7 bước thao tác</h4>
+<ol class="flow"><li><b>1</b>Khách mở mã QR trên app<em>KHÁCH</em></li><li><b>2</b>Quét mã QR tại POS<em>LỄ TÂN</em></li><li><b>3</b>Hỏi khách có muốn dùng point<em>LỄ TÂN</em></li><li><b>4</b>Nhập số point cần dùng<em>LỄ TÂN</em></li><li><b>5</b>Kiểm tra số tiền trước khi kết bill<em>LỄ TÂN</em></li><li><b>6</b>Kết bill<em>LỄ TÂN</em></li><li><b>7</b>Tự tích điểm theo hạng<em>HỆ THỐNG</em></li></ol>
+<article class="step"><figure><a href="p-04.jpg" target="_blank" rel="noopener"><img src="p-04.jpg" alt="Bước 1: Khách mở mã QR trên app" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-k">KHÁCH</span><h3>Bước 1 · Khách mở mã QR trên app</h3><p>Khách mở màn hình [Mã QR thành viên] trên app của mình và đưa cho lễ tân quét.</p></div></article>
+<article class="step"><figure><a href="p-05.jpg" target="_blank" rel="noopener"><img src="p-05.jpg" alt="Bước 2: Quét mã QR tại POS và chọn dịch vụ" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 2 · Quét mã QR tại POS và chọn dịch vụ</h3><p>Quét mã QR trên app của khách bằng đầu đọc ở máy POS, rồi chọn dịch vụ cho khách.</p><p>POS tải thông tin khách và hiển thị số point khách đang có.</p><p class="note warn">Nếu mất internet, POS hiện thông báo: kiểm tra kết nối mạng rồi quét lại.</p></div></article>
+<article class="step"><figure><a href="p-06.jpg" target="_blank" rel="noopener"><img src="p-06.jpg" alt="Bước 3: Hỏi khách có muốn dùng point" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 3 · Hỏi khách có muốn dùng point</h3><p>Hỏi khách có muốn dùng point cho bill này không.</p><p class="note">Nếu khách không dùng point: bỏ qua bước 4, chuyển sang bước 5.</p></div></article>
+<article class="step"><figure><a href="p-07.jpg" target="_blank" rel="noopener"><img src="p-07.jpg" alt="Bước 4: Nhập số point cần dùng" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 4 · Nhập số point cần dùng</h3><p>Nhập số point khách muốn dùng (khung đỏ trong ảnh).</p><p>Mỗi lần tối thiểu 1.000 point và là bội số của 1.000 (1.000, 2.000, 3.000…). 1.000 point = 1.000 đ.</p><p class="note">POS không cho nhập vượt số point khách đang có.</p><p class="note">Có thể dùng point cùng lúc với voucher.</p></div></article>
+<article class="step"><figure><a href="p-08.jpg" target="_blank" rel="noopener"><img src="p-08.jpg" alt="Bước 5: Kiểm tra số tiền trước khi kết bill" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 5 · Kiểm tra số tiền trước khi kết bill</h3><p>Nhìn khung đỏ ở góc dưới màn hình POS: kiểm tra số tiền được trừ và số tiền khách còn phải trả.</p></div></article>
+<article class="step"><figure><a href="p-09.jpg" target="_blank" rel="noopener"><img src="p-09.jpg" alt="Bước 6: Kết bill" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 6 · Kết bill</h3><p>Thanh toán như bình thường, kiểm tra lần cuối rồi xác nhận kết bill.</p><p>Trên bill có dòng [Sử dụng điểm] cho biết số điểm đã tiêu.</p></div></article>
+<article class="step"><figure><a href="p-10.jpg" target="_blank" rel="noopener"><img src="p-10.jpg" alt="Bước 7: Hệ thống tự tích điểm theo hạng" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-h">HỆ THỐNG</span><h3>Bước 7 · Hệ thống tự tích điểm theo hạng</h3><p>Sau khi kết bill, hệ thống tự cộng point cho khách theo tỷ lệ của hạng thành viên, tính trên số tiền bill. Lễ tân không cần thao tác thêm.</p><p>Ví dụ: khách hạng Silver (tích 3%) thanh toán bill 200.000 đ được cộng 6.000 point (200.000 × 3%).</p><p class="note">Point tích và point tiêu của từng bill xem ở màn Giao dịch Membership, cột Point tích (+) và Point tiêu (-).</p></div></article>
+<h4>Checklist trước khi kết bill</h4>
+<ul class="check"><li>Đúng mã QR của khách</li><li>Số point hiển thị trên POS đúng với khách</li><li>Khách đã đồng ý dùng point</li><li>Số point nhập là bội số của 1.000 (2.000, 3.000…) và không vượt số point khách có</li><li>Số tiền sau khi trừ point đúng</li></ul>
+<p class="rule">Nguyên tắc nhớ nhanh: Đúng khách – Khách đồng ý – Đúng số point trước khi kết bill.</p>
+
+<h2 id="voucher">PHẦN 2 · DÙNG VÀ HỦY VOUCHER</h2>
+<p class="box">Voucher: giảm tiền hoặc giảm %</p>
+<h4>Quy tắc cần nhớ</h4>
+<ul class="rules"><li>Có 2 loại voucher: giảm tiền (giảm một số tiền) và giảm % (giảm theo phần trăm).</li><li>Voucher có hạn sử dụng. Khách xem số tiền hoặc % giảm và hạn sử dụng ở mục Voucher trên app.</li><li>Khách bấm [Dùng Voucher] trên app để hiện mã QR, lễ tân quét mã này trên POS.</li><li>Một bill được dùng voucher cùng lúc với point.</li></ul>
+<h4>7 bước thao tác</h4>
+<ol class="flow"><li><b>1</b>Khách mở mã QR trên app<em>KHÁCH</em></li><li><b>2</b>Quét mã QR tại POS<em>LỄ TÂN</em></li><li><b>3</b>Chọn dịch vụ và mục giảm giá<em>LỄ TÂN</em></li><li><b>4</b>Khách chọn voucher trên app<em>KHÁCH</em></li><li><b>5</b>Khách bấm Dùng Voucher<em>KHÁCH</em></li><li><b>6</b>Quét QR voucher và áp dụng<em>LỄ TÂN</em></li><li><b>7</b>Kết bill<em>LỄ TÂN</em></li></ol>
+<article class="step"><figure><a href="p-13.jpg" target="_blank" rel="noopener"><img src="p-13.jpg" alt="Bước 1: Khách mở mã QR trên app" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-k">KHÁCH</span><h3>Bước 1 · Khách mở mã QR trên app</h3><p>Khách mở mã QR thành viên của mình trên app và đưa cho lễ tân quét.</p><p>Bước 1 và 2 giống quy trình tiêu điểm.</p></div></article>
+<article class="step"><figure><a href="p-14.jpg" target="_blank" rel="noopener"><img src="p-14.jpg" alt="Bước 2: Quét mã QR tại POS" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 2 · Quét mã QR tại POS</h3><p>Quét mã QR trên app của khách. POS tải thông tin khách.</p></div></article>
+<article class="step"><figure><a href="p-15.jpg" target="_blank" rel="noopener"><img src="p-15.jpg" alt="Bước 3: Chọn dịch vụ cho khách" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 3 · Chọn dịch vụ cho khách</h3><p>Chọn dịch vụ cho khách. Nếu khách có voucher, chọn thêm mục giảm giá trên POS (mũi tên đỏ trong ảnh chỉ nút [Voucher App]).</p><p class="note">Nếu khách không có voucher, kết bill như bình thường.</p></div></article>
+<article class="step"><figure><a href="p-16.jpg" target="_blank" rel="noopener"><img src="p-16.jpg" alt="Bước 4: Khách chọn voucher trên app" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-k">KHÁCH</span><h3>Bước 4 · Khách chọn voucher trên app</h3><p>Khách vào mục Voucher trên app và chọn một voucher.</p><p>Màn hình hiện chi tiết voucher gồm số tiền hoặc % giảm và hạn sử dụng.</p></div></article>
+<article class="step"><figure><a href="p-17.jpg" target="_blank" rel="noopener"><img src="p-17.jpg" alt="Bước 5: Khách bấm Dùng Voucher" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-k">KHÁCH</span><h3>Bước 5 · Khách bấm Dùng Voucher</h3><p>Nếu khách muốn dùng, bấm nút [Dùng Voucher].</p><p>App hiện mã QR của voucher đó (khung đỏ trong ảnh).</p></div></article>
+<article class="step"><figure><a href="p-18.jpg" target="_blank" rel="noopener"><img src="p-18.jpg" alt="Bước 6: Quét QR voucher và áp dụng" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 6 · Quét QR voucher và áp dụng</h3><p>Lễ tân quét mã QR của voucher. POS hiện thông tin voucher và hai lựa chọn:</p><p>• [Sử dụng Voucher]: áp dụng voucher vào bill.<br>• [Hủy Voucher]: chọn khi không dùng.</p></div></article>
+<article class="step"><figure><a href="p-19.jpg" target="_blank" rel="noopener"><img src="p-19.jpg" alt="Bước 7: Kết bill" loading="lazy"></a></figure>
+<div class="txt"><span class="who who-l">LỄ TÂN</span><h3>Bước 7 · Kết bill</h3><p>Kết bill như bình thường.</p><p>Bill in ra có tên dịch vụ, số tiền giảm và total khách phải trả (hai khung đỏ trong ảnh).</p><p class="note warn">Kiểm tra lại bill trước khi giao cho khách.</p></div></article>
+<h4>Checklist trước khi kết bill</h4>
+<ul class="check"><li>Đúng khách (đã quét mã QR của khách)</li><li>Đã chọn đúng dịch vụ</li><li>Voucher còn hạn sử dụng</li><li>Đúng loại voucher (giảm tiền hoặc giảm %) và đúng mức giảm</li><li>Đã chọn [Sử dụng Voucher] trên POS</li><li>Số tiền giảm và total phải trả đúng</li></ul>
+<p class="rule">Nguyên tắc nhớ nhanh: Đúng khách – Đúng voucher – Đúng số tiền giảm trước khi kết bill.</p>
+</main>
+</body>
+</html>

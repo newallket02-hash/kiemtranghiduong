@@ -150,9 +150,9 @@ async function patchWheel(){
  g.drawImage(chrome,0,0,W,H);
  const OW=old.naturalWidth,OH=old.naturalHeight;
  const OLD=[[11.09,26.93,14.79,54.53],[41.83,26.93,16.31,54.53],[68.21,37.44,26.55,33.52]];
- const NZ=[[5.27,32.0,12.74,46.4],[20.72,32.0,12.52,46.4],[36.03,32.0,12.58,46.4],[51.27,32.0,12.77,46.4],[66.45,33.32,13.09,43.75],[81.79,46.94,13.09,16.52]];
- const SRC=['wq1.webp','wq2.webp',0,'wq4.webp',1,2];
- for(let i=0;i<6;i++){const z=NZ[i],x=z[0]/100*W,y=z[1]/100*H,w=z[2]/100*W,h=z[3]/100*H;
+ const NZ=[[6.82,32.0,12.74,46.4],[25.33,32.0,12.52,46.4],[43.7,32.0,12.58,46.4],[62.0,32.0,12.77,46.4],[80.25,46.94,13.09,16.52]];
+ const SRC=['wq1.webp','wq2.webp',0,'wq4.webp',2];
+ for(let i=0;i<NZ.length;i++){const z=NZ[i],x=z[0]/100*W,y=z[1]/100*H,w=z[2]/100*W,h=z[3]/100*H;
   g.fillStyle='rgba(0,0,0,.14)';g.fillRect(x+2,y+5,w,h);
   if(typeof SRC[i]==='string'){g.drawImage(await loadImg(SRC[i]),x,y,w,h)}
   else{const o=OLD[SRC[i]];g.drawImage(old,o[0]/100*OW,o[1]/100*OH,o[2]/100*OW,o[3]/100*OH,x,y,w,h)}

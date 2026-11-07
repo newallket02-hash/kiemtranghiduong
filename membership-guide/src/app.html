@@ -65,10 +65,14 @@ const SIZES=[148518,242384,443017,373956,424631,517810,395477,518151,401313,3938
 let IMGS=[];
 const img=document.getElementById('img'),slide=document.getElementById('slide');
 const lb=document.getElementById('lb'),li=document.getElementById('lbimg');
-const N=T.length,TOC=1,BASE=14;
+let N=T.length;const TOC=1,BASE=14;
+const INS=2;let INSERTED=false;
+function pageOf(i){return !INSERTED||i<INS?i+1:(i===INS?0:i)}
+function idxOf(p){return !INSERTED||p-1<INS?p-1:p}
 const CMS_FILES=["b23.webp", "b30.webp", "b31.webp", "b32.webp", "b21.webp", "b33.webp", "b20.webp", "cms_21.webp", "cms_22.webp", "cms_23.webp", "b22.webp", "b25.webp", "b26.webp", "b27.webp", "b28.webp", "b29.webp","pos31.webp","pos32.webp","pos33.webp","pos34.webp","pos35.webp","pos36.webp","pos37.webp","pos38.webp","pos39.webp","pos40.webp"];
 let cur=0;
-function parseHash(){const m=location.hash.match(/^#(\d+)$/);return m?Math.min(Math.max(+m[1]-1,0),N-1):0}
+function parseHash(){if(INSERTED&&location.hash==='#tai-app')return INS;const m=location.hash.match(/^#(\d+)$/);return m?Math.min(Math.max(idxOf(+m[1]),0),N-1):0}
+function hashOf(i){const p=pageOf(i);return p?'#'+p:'#tai-app'}
 function go(i,push=true){
  cur=Math.min(Math.max(i,0),N-1);
  img.src=IMGS[cur];img.alt=T[cur];
@@ -79,8 +83,8 @@ function go(i,push=true){
  document.getElementById('prev').disabled=cur===0;
  document.getElementById('next').disabled=cur===N-1;
  document.getElementById('home').hidden=cur===TOC;
- document.getElementById('count').innerHTML='<b>'+(cur+1)+'</b> / '+N+' · '+T[cur]+(zs.length?'<span style="opacity:.7"> · bấm vào ảnh để phóng to</span>':'');
- if(push&&location.hash!=='#'+(cur+1)){try{history.replaceState(null,'','#'+(cur+1))}catch(e){}}
+ const pg=pageOf(cur);document.getElementById('count').innerHTML=(pg?'<b>'+pg+'</b> / '+(INSERTED?N-1:N):'<b>Bắt đầu</b>')+' · '+T[cur]+(zs.length?'<span style="opacity:.7"> · bấm vào ảnh để phóng to</span>':'');
+ if(push&&location.hash!==hashOf(cur)){try{history.replaceState(null,'',hashOf(cur))}catch(e){}}
  if(cur+1<N){const p=new Image();p.src=IMGS[cur+1]}
 }
 let S={s:1,x:0,y:0,min:.2,max:8};
@@ -170,6 +174,13 @@ async function patchFit(si,zi,src,a){
  IMGS[si]=c.toDataURL('image/jpeg',.9);
  ZONES[String(si)][zi]=[x/W*100,y/H*100,w/W*100,h/H*100,src,nu.naturalWidth,nu.naturalHeight];
 }
+function insertDownload(){
+ T.splice(INS,0,'Tải ứng dụng');IMGS.splice(INS,0,'tai_app.webp');
+ const z={};Object.keys(ZONES).forEach(k=>{const i=+k;z[i>=INS?i+1:i]=ZONES[k];delete ZONES[k]});Object.assign(ZONES,z);
+ ZONES[String(INS)]=[[11.32,26.17,13.75,45.9],[38.54,26.17,22.92,33.37]];
+ HOT.forEach(h=>{if(h.to>=INS)h.to++});
+ N=T.length;INSERTED=true;
+}
 (async function load(){
  const c=document.getElementById('count');c.textContent='Đang tải…';
  try{
@@ -188,6 +199,7 @@ async function patchFit(si,zi,src,a){
   try{await patchWheel()}catch(e){}
   try{await patchFit(9,1,'voucher_list.webp',[1050,425,780,908])}catch(e){}
   try{await patchFit(9,2,'voucher_qr.webp',[1957,425,780,908])}catch(e){}
+  insertDownload();
   go(parseHash(),false);
  }catch(e){c.innerHTML='Không tải được nội dung. <a style="color:#e6c47a" href="deck.html">Mở bản dự phòng</a>'}
 })();

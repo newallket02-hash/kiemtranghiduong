@@ -41,26 +41,9 @@ svg{width:24px;height:24px;stroke:currentColor;fill:none;stroke-width:2.2;stroke
 .lbhint{position:absolute;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));font-size:13px;color:#f5ecd9;background:rgba(43,30,11,.9);padding:8px 14px;border-radius:18px;pointer-events:none;white-space:nowrap;max-width:94vw;overflow:hidden;text-overflow:ellipsis}
 @media (max-width:700px){.stage{padding:8px 8px 64px}.nav{top:auto;bottom:calc(8px + env(safe-area-inset-bottom,0px));transform:none;width:44px;height:44px}.prev{left:10px}.next{right:10px}.count{min-width:0;font-size:12px}.count span{display:none}}
 @media (prefers-reduced-motion:no-preference){.slide img{animation:fade .18s ease-out}@keyframes fade{from{opacity:.4}to{opacity:1}}}
-.gate{position:fixed;inset:0;z-index:50;background:var(--stage);display:flex;align-items:center;justify-content:center;padding:20px}
-.gate[hidden]{display:none}
-.gbox{width:100%;max-width:360px;background:#2b1e0b;border:1.5px solid rgba(230,196,122,.45);border-radius:16px;padding:28px 24px;box-shadow:0 12px 40px rgba(0,0,0,.5);text-align:center}
-.gbox h1{margin:12px 0 4px;font-size:20px;color:var(--gold-soft)}
-.gbox p{margin:0 0 18px;font-size:14px;color:rgba(245,236,217,.75)}
-.gbox label{display:block;text-align:left;font-size:13px;color:rgba(245,236,217,.8);margin:10px 0 6px}
-.gbox input{width:100%;height:46px;border-radius:10px;border:1.5px solid rgba(230,196,122,.4);background:#1a1208;color:var(--ink);font-size:16px;padding:0 14px}
-.gbox input:focus{outline:none;border-color:var(--gold)}
-.gbox button{margin-top:18px;width:100%;height:48px;border:0;border-radius:24px;background:var(--gold);color:#fff;font:700 16px Arial,sans-serif;cursor:pointer}
-.gerr{min-height:20px;margin-top:10px;font-size:14px;color:#f0a58a}
 </style>
 </head>
 <body>
-<div class="gate" id="gate"><form class="gbox" id="gform" autocomplete="off">
- <svg viewBox="0 0 24 24" style="width:40px;height:40px;color:#e6c47a"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>
- <h1>Hướng dẫn App Membership</h1><p>Golden Lotus · Vui lòng đăng nhập để xem</p>
- <label for="gid">ID</label><input id="gid" autocapitalize="off" autocorrect="off" spellcheck="false" required>
- <label for="gpw">Mật khẩu</label><input id="gpw" type="password" required>
- <button type="submit">Đăng nhập</button><div class="gerr" id="gerr" role="alert"></div>
-</form></div>
 <div class="stage"><div class="slide" id="slide"><img id="img" alt=""></div></div>
 <button class="nav prev" id="prev" aria-label="Trang trước"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
 <button class="nav next" id="next" aria-label="Trang sau"><svg viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></svg></button>
@@ -222,11 +205,7 @@ async function load(){
   go(parseHash(),false);
  }catch(e){c.innerHTML='Không tải được nội dung. <a style="color:#e6c47a" href="deck.html">Mở bản dự phòng</a>'}
 }
-document.getElementById('gform').addEventListener('submit',e=>{e.preventDefault();
- const id=document.getElementById('gid').value.trim().toLowerCase(),pw=document.getElementById('gpw').value;
- if(id==='admin'&&pw==='123'){document.getElementById('gate').hidden=true;load()}
- else{document.getElementById('gerr').textContent='Sai ID hoặc mật khẩu';document.getElementById('gpw').value=''}});
-document.getElementById('gid').focus();
+load();
 </script>
 </body>
 </html>
